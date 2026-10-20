@@ -13,7 +13,25 @@
 </head>
 <body>
 
-<header class="hero">
+<!-- 읽기 진행바 -->
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- 상단 고정 내비 -->
+<nav class="topbar" id="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#top" aria-label="맨 위로"><span class="brand-mk">민</span><span class="brand-t">김민기</span></a>
+    <button class="burger" id="burger" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+    <div class="nav-links" id="navlinks">
+      <a href="#story" data-sec="story">이야기</a>
+      <a href="#numbers" data-sec="numbers">숫자</a>
+      <a href="#works" data-sec="works">대표작</a>
+      <a href="#docs" data-sec="docs">문서</a>
+      <a href="#contact" class="nav-cta" data-sec="contact">연락</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
   <div class="hero-bg" aria-hidden="true"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="grid"></span></div>
   <div class="wrap hero-in">
     <p class="hero-tag">공개 자기소개 · 3분이면 읽습니다</p>
@@ -34,6 +52,13 @@
   </div>
   <a class="hero-cue" href="#story" aria-label="이야기로 이동">내려서 읽기<span class="cue-arrow">↓</span></a>
 </header>
+
+<!-- 키워드 마키 -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="mq">
+    <span>자기조절력</span><i>·</i><span>대인관계력</span><i>·</i><span>자기동기력</span><i>·</i><span>회복탄력성</span><i>·</i><span>과제지속력</span><i>·</i><span>기록으로 증명하는 사람</span><i>·</i>
+  </div>
+</div>
 
 <main class="wrap">
 
@@ -173,6 +198,8 @@
 
 </main>
 
+<button class="totop" id="totop" aria-label="맨 위로">↑</button>
+
 <script>
 /* 숫자 카드 — data.json에서 읽어 그림 */
 fetch('data.json').then(r => r.json()).then(d => {
@@ -209,6 +236,56 @@ function countUp(el) {
   requestAnimationFrame(step);
 }
 observe();
+
+/* ── 상단바: 스크롤 진행바 + 솔리드 전환 + 스크롤스파이 + 타임라인 진행 ── */
+const topbar = document.getElementById('topbar');
+const progress = document.getElementById('progress');
+const totop = document.getElementById('totop');
+const hero = document.querySelector('.hero');
+const tl = document.querySelector('.timeline');
+function onScroll() {
+  const y = scrollY;
+  topbar.classList.toggle('solid', y > 40);
+  totop.classList.toggle('show', y > 600);
+  const h = document.documentElement.scrollHeight - innerHeight;
+  progress.style.transform = `scaleX(${h ? y / h : 0})`;
+  // 타임라인 선 그려지기
+  if (tl) {
+    const r = tl.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, (innerHeight * .8 - r.top) / r.height));
+    tl.style.setProperty('--tl', p);
+  }
+}
+addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* 스크롤스파이 — 보이는 섹션의 내비 링크 강조 */
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  const link = document.querySelector(`.nav-links a[data-sec="${e.target.id}"]`);
+  if (link) link.classList.toggle('active', e.isIntersecting);
+}), { rootMargin: '-40% 0px -55%' });
+document.querySelectorAll('section.sec, footer.foot').forEach(s => spy.observe(s));
+
+/* 햄버거 메뉴 */
+const burger = document.getElementById('burger'), navlinks = document.getElementById('navlinks');
+burger.addEventListener('click', () => navlinks.classList.toggle('open'));
+navlinks.addEventListener('click', e => { if (e.target.tagName === 'A') navlinks.classList.remove('open'); });
+totop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* 마키 트랙 두 배 — 끊김 없는 루프 */
+const mq = document.getElementById('mq'); mq.innerHTML += mq.innerHTML;
+
+/* 히어로 오브 마우스 패럴랙스 */
+if (matchMedia('(pointer:fine)').matches) {
+  addEventListener('mousemove', e => {
+    if (scrollY > innerHeight) return;
+    const x = (e.clientX / innerWidth - .5), y2 = (e.clientY / innerHeight - .5);
+    document.querySelectorAll('.orb').forEach((o, i) => {
+      const f = [18, 30, 12][i] || 15;
+      o.style.translate = `${x * f}px ${y2 * f}px`;
+    });
+  });
+}
 </script>
 </body>
 </html>
