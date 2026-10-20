@@ -333,11 +333,13 @@ body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-
 .foot-cta.c-mail { background: #EA4335; color: #fff; }
 .foot-cta.c-gh   { background: #2b3137; color: #fff; border: 1.5px solid #ffffff30; }
 .foot-cta.c-kk   { background: #FEE500; color: #3a1e1e; }
-.foot-cta.c-yt   { background: #FF0000; color: #fff; }
+.foot-cta.c-yt   { background: transparent; width: 52px; }
+.foot-cta.c-yt svg { filter: drop-shadow(0 4px 10px rgba(0,0,0,.3)); transition: transform .2s; }
+.foot-cta.c-yt:hover svg { transform: scale(1.12); }
 .foot-cta.c-mail:hover { box-shadow: 0 6px 18px #ea433566; }
 .foot-cta.c-gh:hover   { box-shadow: 0 6px 18px #ffffff22; }
 .foot-cta.c-kk:hover   { box-shadow: 0 6px 18px #fee50055; }
-.foot-cta.c-yt:hover   { box-shadow: 0 6px 18px #ff000066; }
+.foot-cta.c-yt:hover   { box-shadow: none; }
 .foot-note { margin-top: 22px; font-size: 12px; color: #9b9184; position: relative; }
 
 /* ══ 맨위로 ══ */
