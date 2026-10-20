@@ -321,14 +321,14 @@ body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-
 }
 .foot-name { font-family: var(--serif); font-size: 24px; font-weight: 700; }
 .foot-line { font-size: 14px; color: #bdb2a3; margin: 8px 0 22px; }
-.foot-ctas { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.foot-ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 .foot-cta {
-  display: inline-flex; align-items: center; gap: 9px;
-  font-size: 14.5px; font-weight: 700; color: var(--dark); text-decoration: none;
-  background: #ffd9b8; border-radius: 99px; padding: 12px 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: 50%;
+  color: var(--dark); text-decoration: none; background: #ffd9b8;
   transition: transform .2s, background .2s;
 }
-.foot-cta:hover { transform: scale(1.04); background: #ffc795; }
+.foot-cta:hover { transform: scale(1.12) translateY(-2px); background: #ffc795; }
 .foot-note { margin-top: 22px; font-size: 12px; color: #9b9184; position: relative; }
 
 /* ══ 맨위로 ══ */
