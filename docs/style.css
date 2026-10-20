@@ -160,6 +160,9 @@ body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-
 /* ══ 섹션 공통 ══ */
 .sec { padding: clamp(52px, 9vh, 84px) 0; position: relative; }
 .sec + .sec { border-top: 1px solid var(--line); }
+/* 히어로(마키) 바로 아래 — 첫 장면이 이어지게 위 여백을 좁힘 */
+#story { padding-top: clamp(28px, 5vh, 44px); }
+#story .sec-sub { margin-bottom: 24px; }
 .sec-no {
   font-family: var(--serif); font-size: 13px; font-weight: 700; color: var(--c1);
   letter-spacing: .2em; margin-bottom: 8px;
