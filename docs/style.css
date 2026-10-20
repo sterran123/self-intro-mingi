@@ -80,7 +80,10 @@ body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-
 .hero {
   position: relative; overflow: hidden;
   background: var(--dark); color: #f5efe5;
-  padding: clamp(72px,12vh,120px) 0 clamp(56px,8vh,84px);
+  /* 히어로+마키가 딱 첫 화면을 채우게 — 아래 섹션이 삐져나오지 않음 */
+  min-height: calc(100svh - 46px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(56px,9vh,96px) 0;
 }
 .hero-bg { position: absolute; inset: 0; pointer-events: none; }
 .orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; }
@@ -146,7 +149,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-
 /* ══ 키워드 마키 ══ */
 .marquee {
   overflow: hidden; background: var(--dark); border-top: 1px solid #ffffff14;
-  padding: 13px 0;
+  height: 46px; display: flex; align-items: center;
 }
 .marquee-track {
   display: inline-flex; align-items: center; gap: 26px; white-space: nowrap;
