@@ -1,0 +1,93 @@
+/* 김민기 소개 사이트 — 담백하고 읽기 편한 단일 페이지 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --ink: #1c1b18; --ink-2: #55524c; --line: #e8e4db;
+  --bg: #faf9f6; --card: #ffffff; --acc: #7a4f2b; --acc-soft: #f3ece4;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  background: var(--bg); color: var(--ink); line-height: 1.75;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 22px; }
+
+/* 히어로 */
+.hero { padding: 92px 0 64px; border-bottom: 1px solid var(--line); }
+.hero-tag { font-size: 13px; letter-spacing: .12em; color: var(--acc); font-weight: 600; margin-bottom: 14px; }
+.hero-name { font-size: 46px; font-weight: 800; letter-spacing: -.02em; }
+.hero-line { font-size: 19px; color: var(--ink-2); margin: 12px 0 30px; }
+.hero-nav { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero-nav a {
+  text-decoration: none; color: var(--ink); font-size: 14px; font-weight: 600;
+  border: 1px solid var(--line); background: var(--card); border-radius: 99px; padding: 8px 18px;
+  transition: border-color .15s, color .15s;
+}
+.hero-nav a:hover { border-color: var(--acc); color: var(--acc); }
+
+/* 섹션 */
+.sec { padding: 64px 0; border-bottom: 1px solid var(--line); }
+.sec-t { font-size: 26px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 6px; }
+.sec-sub { font-size: 14px; color: var(--ink-2); margin-bottom: 34px; }
+
+/* 이야기 */
+.scene { margin-bottom: 42px; }
+.scene-date {
+  font-size: 13.5px; font-weight: 700; color: var(--acc);
+  background: var(--acc-soft); border-radius: 8px; padding: 8px 14px;
+  display: inline-block; margin-bottom: 14px;
+}
+.scene p { margin-bottom: 14px; font-size: 16px; }
+.scene-cap {
+  font-size: 13px !important; color: var(--ink-2);
+  border-left: 3px solid var(--acc); padding-left: 12px; margin-top: 4px;
+}
+
+/* 숫자 */
+.num-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; }
+.num { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 18px; }
+.num-span { grid-column: 1 / -1; }
+.num-v { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
+.num-span .num-v { font-size: 17px; font-weight: 700; }
+.num-u { font-size: 15px; font-weight: 600; color: var(--ink-2); margin-left: 2px; }
+.num-l { font-size: 14px; font-weight: 700; margin-top: 2px; }
+.num-d { font-size: 12.5px; color: var(--ink-2); margin-top: 6px; }
+.num-s { font-size: 11.5px; color: var(--acc); margin-top: 8px; }
+.num-note { font-size: 13.5px; color: var(--ink-2); margin-top: 20px; background: var(--acc-soft); border-radius: 10px; padding: 12px 16px; }
+
+/* 대표작 */
+.work-grid { display: grid; gap: 14px; }
+.work { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px 22px; }
+.work-empty { opacity: .65; border-style: dashed; }
+.work-tag { font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--acc); margin-bottom: 8px; }
+.work-t { font-size: 18px; font-weight: 800; margin-bottom: 8px; letter-spacing: -.01em; }
+.work-d { font-size: 14px; color: var(--ink-2); margin-bottom: 12px; }
+.work-links { display: flex; gap: 10px; flex-wrap: wrap; }
+.work-link {
+  font-size: 13px; font-weight: 700; color: var(--acc); text-decoration: none;
+  border: 1px solid var(--acc); border-radius: 99px; padding: 6px 14px; display: inline-block;
+}
+.work-link:hover { background: var(--acc); color: #fff; }
+
+/* 문서 */
+.doc-list { display: grid; gap: 10px; }
+.doc {
+  display: flex; align-items: baseline; gap: 14px; text-decoration: none; color: var(--ink);
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px;
+}
+.doc b { font-size: 15px; white-space: nowrap; }
+.doc span { font-size: 13px; color: var(--ink-2); }
+.doc:hover { border-color: var(--acc); }
+
+/* 푸터 */
+.foot { padding: 48px 0 72px; font-size: 14px; color: var(--ink-2); }
+.foot a { color: var(--acc); }
+.foot b { color: var(--ink); font-size: 15px; }
+.foot-note { margin-top: 14px; font-size: 12.5px; }
+
+@media (max-width: 560px) {
+  .hero { padding: 64px 0 48px; }
+  .hero-name { font-size: 34px; }
+  .hero-line { font-size: 16px; }
+  .sec { padding: 48px 0; }
+  .num-v { font-size: 26px; }
+}

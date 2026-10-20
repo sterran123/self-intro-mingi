@@ -1,0 +1,4 @@
+﻿node_modules/
+checks/
+output/run*.json
+output/run*.md

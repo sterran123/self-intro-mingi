@@ -1,0 +1,18 @@
+{
+  "comment": "내 제출 현황 — 새 과제를 마치면 status를 done으로 바꾸고 장치를 다시 돌린다",
+  "items": [
+    { "no": 1, "title": "나를 소개하는 한 페이지", "status": "done" },
+    { "no": 2, "title": "내가 설계한 미니게임", "status": "done" },
+    { "no": 3, "title": "짤·카드 스튜디오", "status": "done" },
+    { "no": 4, "title": "오늘의 진짜 정보판 — 데이터가 안 올 때", "status": "done" },
+    { "no": 5, "title": "대화가 끊겨도 이어지는 프로젝트", "status": "done" },
+    { "no": 6, "title": "플랜두씨 다이어리 1 — 내 계획과 실제를 담는 앱", "status": "done" },
+    { "no": 7, "title": "플랜두씨 다이어리 2 — 인증을 붙이고, 어떻게 붙였는지 설명하기", "status": "done" },
+    { "no": 8, "title": "내 소개 페이지에 패스키 달기 — 비밀번호 없이 나만 들어가기", "status": "done" },
+    { "no": 9, "title": "나를 말하는 에이전트 — 리추얼 기록에서 내 강점과 이야기를 찾습니다", "status": "done" },
+    { "no": 10, "title": "AI와 함께 쓰는 첫 논문 — 가설에서 결론까지", "status": "done", "highlight": "paper" },
+    { "no": 11, "title": "나에 대한 3만 자 장편소설 — 내 삶을 소재로, 진한 감동의 서사", "status": "done" },
+    { "no": 12, "title": "마지막 A · 나를 소개하는 사이트, 그리고 계속 새로 쓰는 장치", "status": "in_progress" },
+    { "no": 13, "title": "앱 (과제 13 — 진행 예정)", "status": "planned" }
+  ]
+}
