@@ -326,9 +326,18 @@ body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-
   display: inline-flex; align-items: center; justify-content: center;
   width: 52px; height: 52px; border-radius: 50%;
   color: var(--dark); text-decoration: none; background: #ffd9b8;
-  transition: transform .2s, background .2s;
+  transition: transform .2s, filter .2s, box-shadow .2s;
 }
-.foot-cta:hover { transform: scale(1.12) translateY(-2px); background: #ffc795; }
+.foot-cta:hover { transform: scale(1.12) translateY(-2px); filter: brightness(1.12); }
+/* 서비스별 브랜드 색 */
+.foot-cta.c-mail { background: #EA4335; color: #fff; }
+.foot-cta.c-gh   { background: #2b3137; color: #fff; border: 1.5px solid #ffffff30; }
+.foot-cta.c-kk   { background: #FEE500; color: #3a1e1e; }
+.foot-cta.c-yt   { background: #FF0000; color: #fff; }
+.foot-cta.c-mail:hover { box-shadow: 0 6px 18px #ea433566; }
+.foot-cta.c-gh:hover   { box-shadow: 0 6px 18px #ffffff22; }
+.foot-cta.c-kk:hover   { box-shadow: 0 6px 18px #fee50055; }
+.foot-cta.c-yt:hover   { box-shadow: 0 6px 18px #ff000066; }
 .foot-note { margin-top: 22px; font-size: 12px; color: #9b9184; position: relative; }
 
 /* ══ 맨위로 ══ */
