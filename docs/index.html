@@ -282,8 +282,11 @@ burger.addEventListener('click', () => navlinks.classList.toggle('open'));
 navlinks.addEventListener('click', e => { if (e.target.tagName === 'A') navlinks.classList.remove('open'); });
 totop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
 
-/* 마키 트랙 두 배 — 끊김 없는 루프 */
-const mq = document.getElementById('mq'); mq.innerHTML += mq.innerHTML;
+/* 마키 트랙 — 화면 폭 이상으로 채운 뒤 두 배 → 빈틈 없이 이어지는 루프 */
+const mq = document.getElementById('mq');
+const mqUnit = mq.innerHTML;
+while (mq.scrollWidth < innerWidth) mq.innerHTML += mqUnit;
+mq.innerHTML += mq.innerHTML;
 
 /* 히어로 오브 마우스 패럴랙스 */
 if (matchMedia('(pointer:fine)').matches) {
