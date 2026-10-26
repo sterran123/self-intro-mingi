@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>몇 번 고치면 되는가 — AI 교정 수렴 도우미</title>
+<meta name="description" content="AI 교정을 반복해서 쓰는 사람에게, 변경률 측정으로 '언제 멈춰도 되는지'를 알려 주는 앱. 논문 '같은 글을 AI가 반복해서 고칠 때, 고치는 양은 줄어드는가'의 실측을 반영.">
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="hero-tag">논문 기반 도구 · 과제 10 논문의 결과를 쓰는 앱</p>
+    <h1 class="hero-title">몇 번 고치면 되는가</h1>
+    <p class="hero-paper">기반 논문 — <em>같은 글을 AI가 반복해서 고칠 때, 고치는 양은 줄어드는가</em> (김민기, 2026)</p>
+    <p class="hero-line">
+      AI에게 글 교정을 반복해서 시키는 사람을 돕습니다.
+      고친 글을 붙여넣어 <strong>변경률</strong>을 재면, 논문이 실측한 수렴 데이터로
+      <strong>언제 멈춰도 되는지</strong>와 <strong>어떤 지시문을 써야 하는지</strong>를 알려 줍니다.
+    </p>
+    <div class="hero-chips">
+      <span>변경률 측정</span><span>회차 추적</span><span>수렴·진동 판정</span><span>지시문 비교</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ① 변경률 측정 -->
+  <section class="panel" id="measure">
+    <div class="panel-head">
+      <p class="step">할 일 1</p>
+      <h2>이전 글과 다음 글을 붙여넣으세요</h2>
+      <p class="sub">AI가 1차로 고친 글이 원본과 얼마나 달라졌는지, 논문과 같은 방식(문자 편집 거리 ÷ 입력 문자 수)으로 잽니다. AI 교정 출력, 사람이 고친 것, 아무 두 글이나 비교해도 됩니다.</p>
+    </div>
+    <div class="io-grid">
+      <label class="io">
+        <span class="io-label">이전 글 <small>(교정 전 / 직전 회차 출력)</small></span>
+        <textarea id="ta-a" rows="6" placeholder="교정 전 글을 붙여넣으세요. 예시 채우기 버튼으로 바로 해 볼 수 있습니다." spellcheck="false"></textarea>
+        <span class="io-count" id="cnt-a">0자</span>
+      </label>
+      <label class="io">
+        <span class="io-label">다음 글 <small>(교정 후 / 이번 회차 출력)</small></span>
+        <textarea id="ta-b" rows="6" placeholder="교정된 글을 붙여넣으세요." spellcheck="false"></textarea>
+        <span class="io-count" id="cnt-b">0자</span>
+      </label>
+    </div>
+    <div class="btn-row">
+      <button class="btn primary" id="btn-measure">변경률 재기</button>
+      <button class="btn" id="btn-sample">예시 채우기</button>
+      <button class="btn" id="btn-swap">A·B 바꾸기</button>
+    </div>
+    <div class="verdict" id="verdict" hidden>
+      <div class="v-main">
+        <p class="v-rate"><span id="v-rate">0</span><small>%</small></p>
+        <div class="v-info">
+          <p class="v-title" id="v-title"></p>
+          <p class="v-desc" id="v-desc"></p>
+          <p class="v-paper" id="v-paper"></p>
+        </div>
+      </div>
+      <button class="btn primary" id="btn-record">이 회차를 기록 →</button>
+    </div>
+  </section>
+
+  <!-- ② 회차 추적 -->
+  <section class="panel" id="rounds">
+    <div class="panel-head">
+      <p class="step">할 일 2</p>
+      <h2>회차를 쌓으면 수렴인지 진동인지 보입니다</h2>
+      <p class="sub">위에서 "이 회차를 기록"을 누르면 아래에 쌓입니다. 논문의 조건 A 평균(6.91→1.49→0.62%)과 나란히 놓아 보세요.</p>
+    </div>
+    <div class="rounds-empty" id="rounds-empty">아직 기록된 회차가 없습니다. 위에서 변경률을 재고 기록해 보세요.</div>
+    <div class="chart" id="chart" hidden>
+      <div class="chart-row head"><span>회차</span><span>내 변경률</span><span>논문 평균</span></div>
+      <div id="chart-rows"></div>
+    </div>
+    <div class="round-status" id="round-status" hidden></div>
+    <div class="btn-row" id="round-btns" hidden>
+      <button class="btn" id="btn-next">다음 회차 측정 준비</button>
+      <button class="btn ghost" id="btn-clear">기록 지우기</button>
+    </div>
+  </section>
+
+  <!-- ③ 지시문 비교 -->
+  <section class="panel" id="prompts">
+    <div class="panel-head">
+      <p class="step">할 일 3</p>
+      <h2>지시문을 고르면 수렴 양상이 달라집니다</h2>
+      <p class="sub">논문의 대조 실험: 편집 범위를 규범 오류로 제한한 조건 B는 1차에서 10/10 전부 완전 수렴(0%)했습니다. 진동이 싫다면 지시문으로 범위를 묶으세요.</p>
+    </div>
+    <div class="cond-grid">
+      <button class="cond active" data-cond="a">
+        <b>조건 A · 문체 다듬기 허용</b>
+        <span>평균 변경률 6.91% → 1.49% → 0.62% · 3/10 진동</span>
+      </button>
+      <button class="cond" data-cond="b">
+        <b>조건 B · 규범 오류만</b>
+        <span>평균 변경률 5.00% → 0.00% → 0.00% · 10/10 완전 수렴</span>
+      </button>
+    </div>
+    <div class="cond-detail" id="cond-detail"></div>
+  </section>
+
+  <footer class="foot">
+    <p>이 앱은 논문의 측정 방법(문자 편집 거리 변경률)과 실측 결과(조건 A/B 평균)를 그대로 씁니다. 계산은 이 브라우저 안에서만 일어나며, 입력한 글은 어디에도 보내지 않습니다.</p>
+  </footer>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
