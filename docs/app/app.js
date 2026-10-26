@@ -92,15 +92,16 @@ $('btn-measure').addEventListener('click', () => {
 /* ── 할 일 2: 회차 기록·추적 ── */
 $('btn-record').addEventListener('click', () => {
   const a = taA.value, b = taB.value;
-  if (!a.trim()) return showErr('기록할 측정이 없습니다. 먼저 변경률을 재세요.');
+  if (!a.trim() || !b.trim()) return showErr('기록할 측정이 없습니다. 먼저 변경률을 재세요.');
   rounds.push(+(lev(a, b) / a.length * 100).toFixed(2));
   renderRounds();
+  $('verdict').hidden = true;
   // 다음 회차 준비: 이번 출력이 다음 입력
   taA.value = b; taB.value = ''; taB.focus(); count();
 });
 
 $('btn-next').addEventListener('click', () => { taB.focus(); $('measure').scrollIntoView({ behavior: 'smooth' }); });
-$('btn-clear').addEventListener('click', () => { rounds.length = 0; renderRounds(); });
+$('btn-clear').addEventListener('click', () => { rounds.length = 0; sampleIdx++; renderRounds(); });
 
 function verdictClass(rate, prev, r) {
   if (rate === 0) return 'conv';
@@ -162,23 +163,41 @@ function renderCond() {
     <button class="btn" id="btn-copy">이 지시문 복사</button>
     <p class="tiny">실측: ${d.avg.map((v, i) => `${i + 1}차 ${v}%`).join(' → ')} · 진동 샘플 ${d.oscSamples}</p>`;
   $('btn-copy').addEventListener('click', () => {
-    navigator.clipboard.writeText(c.text).then(() => { $('btn-copy').textContent = '복사됨 ✓'; });
+    const done = () => { $('btn-copy').textContent = '복사됨 ✓'; setTimeout(() => $('btn-copy').textContent = '이 지시문 복사', 1600); };
+    if (navigator.clipboard?.writeText) { navigator.clipboard.writeText(c.text).then(done).catch(() => fallback()); }
+    else fallback();
+    function fallback() {
+      const t = document.createElement('textarea');
+      t.value = c.text; document.body.appendChild(t); t.select();
+      document.execCommand('copy'); t.remove(); done();
+    }
   });
 }
 renderCond();
 
-/* ── 예시 데이터 (논문과 별개의 공개 예시) ── */
+/* ── 예시 데이터 (논문과 별개의 공개 예시 — 같은 글의 회차별 결과가 이어짐) ── */
+const SAMPLES = [
+  // [원문, 1차 출력, 2차 출력, 3차 출력] — 논문 패턴처럼 변경률이 줄어들다 멈춤
+  ['오늘은 학교에서 발표를 했다. 준비를 많이 햇는데도 손이 떨렷다. 그치만 친구들이 잘했다고 해주어서 기분이 좋았다. 다음엔 더 자신있게 할수 있을것 같다.',
+   '오늘은 학교에서 발표를 했다. 준비를 많이 했는데도 손이 떨렸다. 그렇지만 친구들이 잘했다고 해 줘서 기분이 좋았다. 다음엔 더 자신 있게 할 수 있을 것 같다.',
+   '오늘은 학교에서 발표를 했다. 준비를 많이 했는데도 손이 떨렸다. 그렇지만 친구들이 잘했다고 해 준 덕분에 기분이 좋았다. 다음에는 더 자신 있게 할 수 있을 것 같다.',
+   '오늘은 학교에서 발표를 했다. 준비를 많이 했는데도 손이 떨렸다. 그렇지만 친구들이 잘했다고 해 준 덕분에 기분이 좋았다. 다음에는 더 자신 있게 할 수 있을 것 같다.'],
+  ['어제 읽은책이 아직도 생각난다. 주인공이 포기하지 않고 계속 도전하는것이 인상적이였다. 나도 힘든일이 있어도 쉽게 포기하면 안되겠다고 느낀다.',
+   '어제 읽은 책이 아직도 생각난다. 주인공이 포기하지 않고 계속 도전하는 것이 인상적이었다. 나도 힘든 일이 있어도 쉽게 포기하면 안 되겠다고 느낀다.',
+   '어제 읽은 책이 아직도 생각난다. 주인공이 포기하지 않고 계속 도전하는 모습이 인상적이었다. 나도 힘든 일이 있어도 쉽게 포기하면 안 되겠다고 느꼈다.',
+   '어제 읽은 책이 아직도 생각난다. 주인공이 포기하지 않고 계속 도전하는 모습이 인상적이었다. 나도 힘든 일이 있어도 쉽게 포기하면 안 되겠다고 느꼈다.'],
+  ['프로젝트 회의가 세시간이나 걸렸다. 각자 생각이 달라서 의견조율이 어려웠지만, 결국 모두가 동의할수 있는 결론에 도달했다. 힘들었지만 성과가 있던 회의였다.',
+   '프로젝트 회의가 세 시간이나 걸렸다. 각자 생각이 달라서 의견 조율이 어려웠지만, 결국 모두가 동의할 수 있는 결론에 도달했다. 힘들었지만 성과가 있던 회의였다.',
+   '프로젝트 회의가 세 시간이나 걸렸다. 각자 생각이 달라 의견 조율이 어려웠지만, 결국 모두가 동의할 수 있는 결론에 도달했다. 힘들었지만 성과가 있던 회의였다.',
+   '프로젝트 회의가 세 시간이나 걸렸다. 각자 생각이 달라 의견 조율이 어려웠지만, 결국 모두가 동의할 수 있는 결론에 도달했다. 힘들었지만 성과가 있던 회의였다.'],
+];
+let sampleIdx = 0; // 기록을 지우면 다음 예시 세트로 넘어감
+
 $('btn-sample').addEventListener('click', () => {
-  const samples = [
-    ['오늘은 학교에서 발표를 했다. 준비를 많이 햇는데도 손이 떨렷다. 그치만 친구들이 잘했다고 해주어서 기분이 좋았다. 다음엔 더 자신있게 할수 있을것 같다.',
-     '오늘은 학교에서 발표를 했다. 준비를 많이 했는데도 손이 떨렸다. 그렇지만 친구들이 잘했다고 해 줘서 기분이 좋았다. 다음엔 더 자신 있게 할 수 있을 것 같다.'],
-    ['어제 읽은책이 아직도 생각난다. 주인공이 포기하지 않고 계속 도전하는것이 인상적이였다. 나도 힘든일이 있어도 쉽게 포기하면 안되겠다고 느낀다.',
-     '어제 읽은 책이 아직도 생각난다. 주인공이 포기하지 않고 계속 도전하는 것이 인상적이었다. 나도 힘든 일이 있어도 쉽게 포기하면 안 되겠다고 느낀다.'],
-    ['프로젝트 회의가 세시간이나 걸렸다. 각자 생각이 달라서 의견조율이 어려웠지만, 결국 모두가 동의할수 있는 결론에 도달했다. 힘들었지만 성과가 있던 회의였다.',
-     '프로젝트 회의가 세 시간이나 걸렸다. 각자 생각이 달라서 의견 조율이 어려웠지만, 결국 모두가 동의할 수 있는 결론에 도달했다. 힘들었지만 성과가 있던 회의였다.'],
-  ];
-  const s = samples[rounds.length % samples.length];
-  taA.value = s[0]; taB.value = s[1]; count(); showErr('');
+  const s = SAMPLES[sampleIdx % SAMPLES.length];
+  const r = Math.min(rounds.length, s.length - 2);
+  taA.value = s[r]; taB.value = s[r + 1];
+  count(); showErr(''); $('verdict').hidden = true;
   $('btn-measure').scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
