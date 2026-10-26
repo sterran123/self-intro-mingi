@@ -96,6 +96,7 @@ $('btn-record').addEventListener('click', () => {
   rounds.push(+(lev(a, b) / a.length * 100).toFixed(2));
   renderRounds();
   $('verdict').hidden = true;
+  $('round-hint').hidden = false;
   // 다음 회차 준비: 이번 출력이 다음 입력
   taA.value = b; taB.value = ''; taB.focus(); count();
 });
