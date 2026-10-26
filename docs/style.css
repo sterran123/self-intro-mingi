@@ -301,7 +301,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-
   display: inline-flex; align-items: center; gap: 6px;
   transition: background .2s, color .2s;
 }
-.work-link::after { content: '↓'; }
+.work-link:not(.ext)::after { content: '↓'; }
 .work-link:hover { background: var(--c5); color: #fff; }
 
 /* ══ 문서 ══ */
